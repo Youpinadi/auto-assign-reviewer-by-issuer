@@ -28,12 +28,9 @@ async function run() {
 }
 
 async function assignReviewers(octokit, reviewers) {
-  await octokit.pulls.createReviewRequest({
-    owner: context.repo.owner,
-    repo: context.repo.repo,
-    pull_number: context.payload.pull_request.number,
-    reviewers: reviewers,
-  });
+  await octokit.request(`POST /repos/${context.repo.owner}/${context.repo.repo}/pulls/${context.payload.pull_request.number}/requested_reviewers`, {
+    reviewers
+  })
 }
 
 async function fetchContent(client, repoPath) {
